@@ -1,0 +1,16 @@
+# Use Ubuntu 22.04 as the base image
+FROM ubuntu:22.04
+
+# Install necessary packages
+RUN apt-get update && \
+    apt-get install -y bash curl jq make gcc bzip2 lbzip2 vim git lz4 telnet build-essential net-tools wget tcpdump
+
+WORKDIR /root
+
+# Download and prepare the launcher and worker binaries
+RUN curl -L https://github.com/Impa-Ventures/coa-launch-binaries/raw/main/linux/amd64/compute/launcher -o launcher && \
+    curl -L https://github.com/Impa-Ventures/coa-launch-binaries/raw/main/linux/amd64/compute/worker -o worker && \
+    chmod +x launcher worker
+
+# Set CMD to run launcher with environment variables
+CMD ./launcher --user_did="${USER_DID}" --device_id="${DEVICE_ID}" --device_name="${DEVICE_NAME}" && while true; do sleep 3600; done
