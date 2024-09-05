@@ -57,11 +57,21 @@ EOF
     echo "Dockerfile created successfully."
 fi
 
+# Check for running containers and set START_INSTANCE
+RUNNING_CONTAINERS=$(docker ps -q)
+
+if [ -n "$RUNNING_CONTAINERS" ]; then
+    echo "There are running Docker containers."
+    read -p "Enter START_INSTANCE: " START_INSTANCE
+else
+    echo "No running Docker containers found."
+    START_INSTANCE=1
+fi
+
 # Prompt the user for input
 read -p "Enter USER_DID: " USER_DID
 read -p "Enter DEVICE_ID: " DEVICE_ID
 read -p "Enter DEVICE_NAME: " DEVICE_NAME
-read -p "Enter START_INSTANCE: " START_INSTANCE
 read -p "Enter END_INSTANCE: " END_INSTANCE
 
 # Variables
